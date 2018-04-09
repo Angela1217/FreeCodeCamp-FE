@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Convert HTML Entities</title>
+</head>
+<body>
+    <!-- 
+        Convert the characters &, <, >, " (double quote), and ' (apostrophe), 
+        in a string to their corresponding HTML entities.
+     -->
+
+     <script>
+        function convertHTML(str) {
+            // &colon;&rpar;
+            var resultStr = '';
+
+            for(var i = 0; i < str.length; i++){
+                if(str[i] === '&'){
+                    resultStr += '&amp;';
+                }else if(str[i] === '<'){
+                    resultStr += '&lt;';
+                }else if(str[i] === '>'){
+                    resultStr += '&gt;';
+                }else if(str[i] === '"'){
+                    resultStr += '&quot;';
+                }else if(str[i] === '\''){
+                    resultStr += '&apos;';
+                }else{
+                    resultStr += str[i];
+                }
+            }
+            // console.log(resultStr);
+            return resultStr;
+        }
+
+        // convertHTML("Dolce & Gabbana");
+        convertHTML("Hamburgers < Pizza < Tacos");
+     
+     
+     </script>
+</body>
+</html>
