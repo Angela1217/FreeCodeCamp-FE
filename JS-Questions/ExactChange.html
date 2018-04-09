@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Exact Change</title>
+</head>
+<body>
+    <!-- 
+        Design a cash register drawer function checkCashRegister() 
+        that accepts purchase price as the first argument (price), 
+        payment as the second argument (cash), and cash-in-drawer (cid) as the third argument.
+
+        cid is a 2D array listing available currency.
+
+        Return the string "Insufficient Funds" if cash-in-drawer is less than the change due. 
+        Return the string "Closed" if cash-in-drawer is equal to the change due.
+
+        Otherwise, return change in coin and bills, sorted in highest to lowest order.
+     -->
+
+    <script>
+        function checkCashRegister(price, cash, cid) {
+            var change = [],
+                changeAmount = parseFloat((cash - price).toFixed(2)),
+                cidTotal = 0;
+            for(var i = 0; i < cid.length; i++){
+                cidTotal += cid[i][1];
+            }
+            cidTotal = parseFloat(cidTotal.toFixed(2));
+            if(cidTotal < changeAmount){
+                return 'Insufficient Funds';
+            }else if(cidTotal === changeAmount){
+                return 'Closed';
+            }else{
+                for(var i = cid.length - 1; i >= 0; i--){
+                    if(changeAmount - cid[i][1] >= 0){
+                        change.push(cid[i]);
+                        changeAmount = parseFloat((changeAmount - cid[i][1]).toFixed(2));
+                    }else{
+                        var temp = 0;
+                        switch(cid[i][0]){
+                            case 'ONE HUNDRED':
+                                temp = 100;
+                                break;
+                            case 'TWENTY':
+                                temp = 20;
+                                break;
+                            case 'TEN':
+                                temp = 10;
+                                break;
+                            case 'FIVE':
+                                temp = 5;
+                                break;
+                            case 'ONE':
+                                temp = 1;
+                                break;
+                            case 'QUARTER':
+                                temp = 0.25;
+                                break;
+                            case 'DIME':
+                                temp = 0.1;
+                                break;
+                            case 'NICKEL':
+                                temp = 0.05;
+                                break;
+                            case 'PENNY':
+                                temp = 0.01;
+                                break;
+                        }
+                        change.push([cid[i][0], Math.floor(changeAmount / temp) * temp]);
+                        changeAmount = parseFloat((changeAmount % temp).toFixed(2));
+                   }
+                }
+            }
+            var result = [],
+                resultTotal = 0;
+            for(var i = 0; i < change.length; i++){
+                if(change[i][1] !== 0){
+                    result.push(change[i]);
+                    resultTotal += change[i][1];
+                }
+            }
+            resultTotal = parseFloat(resultTotal.toFixed(2));
+            if(resultTotal !== parseFloat((cash - price).toFixed(2))){
+                return 'Insufficient Funds';
+            }else{
+                return result;
+            }
+        }
+
+        // Example cash-in-drawer array:
+        // [["PENNY", 1.01],
+        // ["NICKEL", 2.05],
+        // ["DIME", 3.10],
+        // ["QUARTER", 4.25],
+        // ["ONE", 90.00],
+        // ["FIVE", 55.00],
+        // ["TEN", 20.00],
+        // ["TWENTY", 60.00],
+        // ["ONE HUNDRED", 100.00]]
+
+        checkCashRegister(19.50, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]);
+        // checkCashRegister(19.50, 20.00, [["PENNY", 0.50], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]);
+        // console.log(checkCashRegister(3.26, 100.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]));
+        // checkCashRegister(19.50, 20.00, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 1.00], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]);
+    </script>
+</body>
+</html>
